@@ -19,13 +19,13 @@ vList <- strsplit(opt$variables, ",")[[1]]
 files <- arguments$args
 f1 <- files[1]
 h <- strsplit(readLines(f1, 1), "\t")[[1]]
-h1 <- gsub("Software Unknown:(.*)$", "\\1", h)
+h1 <- make.names(gsub("Software Unknown:(.*)$", "\\1", h), unique=TRUE)
 if(opt$`list-variables`) {
   writeLines(h1)
   quit("no")
 }
 
-featureNames <- read.delim(f1, colClasses=ifelse(h1 == "Reporter identifier", "character", "NULL"))[[1]]
+featureNames <- read.delim(f1, colClasses=ifelse(h1 == "Reporter.identifier", "character", "NULL"))[[1]]
 featureNames <- gsub("www.chem.agilent.com:R:(.*)", "\\1", featureNames)
 colClasses <- ifelse(h1 %in% vList, "numeric", "NULL")
 R <- lapply(files, read.delim, colClasses=colClasses)
